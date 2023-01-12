@@ -48,7 +48,16 @@ public class PlayerFishing : MonoBehaviour
     [SerializeField] private Sprite MelkFeskSprite;
     [SerializeField] private Sprite fishSprite;
     [SerializeField] private Sprite fourWingedNarWhalSprite;
+    [SerializeField] private Sprite scaredFeskSprite;
     private int whatFish;
+
+    private bool isDarkBiome;
+    private bool isLightBiome;
+    private bool isSeagullBiome;
+
+    private LayerMask DarkLayer;
+    private LayerMask LightLayer;
+    private LayerMask SeagullLayer;
     void Start()
     {
         input = GetComponent<Inputs>();
@@ -198,6 +207,10 @@ public class PlayerFishing : MonoBehaviour
                     {
                         bobberRenderer.sprite = fourWingedNarWhalSprite;
                     }
+                    if (whatFish == 8)
+                    {
+                        bobberRenderer.sprite = scaredFeskSprite;
+                    }
                 }
                // bobberRenderer.sprite = bobberSprite;
                 currentBobberSpeed = 0;
@@ -256,7 +269,7 @@ public class PlayerFishing : MonoBehaviour
             case 4:
                 
                 currentTimeBeforeFish = Random.Range(1f, 6f);
-                whatFish = Random.Range(1, 8);
+                whatFish = Random.Range(1, 9);
                 print(currentTimeBeforeFish);
                 currentFishTimeWindow = -20;
                 hasFishBit = false;
@@ -272,6 +285,16 @@ public class PlayerFishing : MonoBehaviour
         isInRange = Physics2D.Raycast(origin1, direction, 0.1f, isInRangeLayer);
         Debug.DrawRay(origin1, direction * 0.1f, Color.red);
 
+    }
+
+    private void BiomeFinder()
+    {
+        Vector2 origin1 = bobber.transform.position;
+        Vector2 direction = Vector2.up;
+        Debug.DrawRay(origin1, direction * 0.1f, Color.red);
+        isDarkBiome = Physics2D.Raycast(origin1, direction, 0.1f, DarkLayer);
+        isLightBiome = Physics2D.Raycast(origin1, direction, 0.1f, LightLayer);
+        isSeagullBiome = Physics2D.Raycast(origin1, direction, 0.1f, SeagullLayer);
     }
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -310,6 +333,9 @@ public class PlayerFishing : MonoBehaviour
         {
             fishStats.FourWingedNarwhal += 1;
         }
-
+        if(whatFish == 8)
+        {
+            fishStats.scared += 1;
+        }
     }
 }

@@ -11,6 +11,8 @@ public class FishStatsScripts : MonoBehaviour
     public int MelkFesk;
     public int FourWingedNarwhal;
     public int fish;
+    public int scared;
+    public int Seagull;
     // Start is called before the first frame update
     void Start()
     {
