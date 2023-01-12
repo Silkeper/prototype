@@ -9,6 +9,7 @@ public class Inputs : MonoBehaviour
 
     public Vector2 MoveVector;
     public bool ActionValue;
+    public bool menufishValue;
 
     private void Awake()
     {
@@ -20,6 +21,8 @@ public class Inputs : MonoBehaviour
         MoveVector = inputActions.Boat.Move.ReadValue<Vector2>();
 
         ActionValue = inputActions.Boat.Action.triggered;
+
+        menufishValue = inputActions.Boat.FishMenu.triggered;
     }
 
     private void OnEnable()

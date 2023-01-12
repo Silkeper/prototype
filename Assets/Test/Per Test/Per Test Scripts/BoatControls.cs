@@ -44,6 +44,15 @@ public partial class @BoatControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FishMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""1dee936c-9697-42ef-ba0d-6a9774ee02c4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +143,28 @@ public partial class @BoatControls : IInputActionCollection2, IDisposable
                     ""action"": ""Action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""91e88fe6-3569-4f88-85dd-2164c33db378"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FishMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c6dc941-e5db-4235-8a9d-2969587ef20c"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FishMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -144,6 +175,7 @@ public partial class @BoatControls : IInputActionCollection2, IDisposable
         m_Boat = asset.FindActionMap("Boat", throwIfNotFound: true);
         m_Boat_Move = m_Boat.FindAction("Move", throwIfNotFound: true);
         m_Boat_Action = m_Boat.FindAction("Action", throwIfNotFound: true);
+        m_Boat_FishMenu = m_Boat.FindAction("FishMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,12 +237,14 @@ public partial class @BoatControls : IInputActionCollection2, IDisposable
     private IBoatActions m_BoatActionsCallbackInterface;
     private readonly InputAction m_Boat_Move;
     private readonly InputAction m_Boat_Action;
+    private readonly InputAction m_Boat_FishMenu;
     public struct BoatActions
     {
         private @BoatControls m_Wrapper;
         public BoatActions(@BoatControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Boat_Move;
         public InputAction @Action => m_Wrapper.m_Boat_Action;
+        public InputAction @FishMenu => m_Wrapper.m_Boat_FishMenu;
         public InputActionMap Get() { return m_Wrapper.m_Boat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -226,6 +260,9 @@ public partial class @BoatControls : IInputActionCollection2, IDisposable
                 @Action.started -= m_Wrapper.m_BoatActionsCallbackInterface.OnAction;
                 @Action.performed -= m_Wrapper.m_BoatActionsCallbackInterface.OnAction;
                 @Action.canceled -= m_Wrapper.m_BoatActionsCallbackInterface.OnAction;
+                @FishMenu.started -= m_Wrapper.m_BoatActionsCallbackInterface.OnFishMenu;
+                @FishMenu.performed -= m_Wrapper.m_BoatActionsCallbackInterface.OnFishMenu;
+                @FishMenu.canceled -= m_Wrapper.m_BoatActionsCallbackInterface.OnFishMenu;
             }
             m_Wrapper.m_BoatActionsCallbackInterface = instance;
             if (instance != null)
@@ -236,6 +273,9 @@ public partial class @BoatControls : IInputActionCollection2, IDisposable
                 @Action.started += instance.OnAction;
                 @Action.performed += instance.OnAction;
                 @Action.canceled += instance.OnAction;
+                @FishMenu.started += instance.OnFishMenu;
+                @FishMenu.performed += instance.OnFishMenu;
+                @FishMenu.canceled += instance.OnFishMenu;
             }
         }
     }
@@ -244,5 +284,6 @@ public partial class @BoatControls : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
+        void OnFishMenu(InputAction.CallbackContext context);
     }
 }
