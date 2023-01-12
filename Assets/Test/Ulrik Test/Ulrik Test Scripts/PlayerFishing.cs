@@ -6,15 +6,17 @@ using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 public class PlayerFishing : MonoBehaviour
 {
-    private UlrikTestInput input;
+    private Inputs input;
+    private FishStatsScripts fishStats;
     [SerializeField] private GameObject bobber;
     private Rigidbody2D bobberRb;
+    private SpriteRenderer bobberRenderer;
 
     private float currentBobberSpeed;
     private float MaxBobberSpeed = 10;
     private float bobberSpeedDecay = 13;
 
-    private float bobberRecallSpeed = 20;
+    private float bobberRecallSpeed = 5;
     private bool isBobberPositionReset;
 
     private int bobberState;
@@ -30,10 +32,22 @@ public class PlayerFishing : MonoBehaviour
 
     private bool isInRange;
     [SerializeField] private LayerMask isInRangeLayer;
+
+    [SerializeField] private Sprite bobberSprite;
+    [SerializeField] private Sprite feskSprite;
+    [SerializeField] private Sprite blueFeskSprite;
+    [SerializeField] private Sprite legFeskSprite;
+    [SerializeField] private Sprite DadSprite;
+    [SerializeField] private Sprite MelkFeskSprite;
+    [SerializeField] private Sprite fishSprite;
+    [SerializeField] private Sprite fourWingedNarWhalSprite;
+    private int whatFish;
     void Start()
     {
-        input = GetComponent<UlrikTestInput>();
+        input = GetComponent<Inputs>();
+        fishStats = GetComponent<FishStatsScripts>();
         bobberRb = bobber.GetComponent<Rigidbody2D>();
+        bobberRenderer = bobber.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -54,6 +68,7 @@ public class PlayerFishing : MonoBehaviour
         {
             case 0:
                 //The bobber is inactive
+                bobberRenderer.sprite = bobberSprite;
                 isBobberPositionReset = false;
                 bobber.SetActive(false);
                 if(input.ActionValue)
@@ -77,7 +92,8 @@ public class PlayerFishing : MonoBehaviour
                 if(currentBobberSpeed <= 0)
                 {
                     bobberState = 2;
-                    currentTimeBeforeFish = Random.Range(1,6);
+                    currentTimeBeforeFish = Random.Range(1f,6f);
+                    whatFish = Random.Range(1,8);
                     print(currentTimeBeforeFish);
                     currentFishTimeWindow = 0;
                     hasFishBit = false;
@@ -85,7 +101,70 @@ public class PlayerFishing : MonoBehaviour
                 break;
             case 2:
                 //bobber exists
-                
+                if(currentFishTimeWindow > 0)
+                {
+                    // bobberRenderer.sprite = bobberSprite;
+                    if (whatFish == 1)
+                    {
+                        bobberRenderer.sprite = feskSprite;
+                    }
+                    if (whatFish == 2)
+                    {
+                        bobberRenderer.sprite = blueFeskSprite;
+                    }
+                    if (whatFish == 3)
+                    {
+                        bobberRenderer.sprite = legFeskSprite;
+                    }
+                    if (whatFish == 4)
+                    {
+                        bobberRenderer.sprite = DadSprite;
+                    }
+                    if (whatFish == 5)
+                    {
+                        bobberRenderer.sprite = MelkFeskSprite;
+                    }
+                    if (whatFish == 6)
+                    {
+                        bobberRenderer.sprite = fishSprite;
+                    }
+                    if (whatFish == 7)
+                    {
+                        bobberRenderer.sprite = fourWingedNarWhalSprite;
+                    }
+                }/*
+                else
+                {
+                    if (whatFish == 1)
+                    {
+                        bobberRenderer.sprite = feskSprite;
+                    }
+                    if (whatFish == 2)
+                    {
+                        bobberRenderer.sprite = blueFeskSprite;
+                    }
+                    if (whatFish == 3)
+                    {
+                        bobberRenderer.sprite = legFeskSprite;
+                    }
+                    if (whatFish == 4)
+                    {
+                        bobberRenderer.sprite = DadSprite;
+                    }
+                    if (whatFish == 5)
+                    {
+                        bobberRenderer.sprite = MelkFeskSprite;
+                    }
+                    if (whatFish == 6)
+                    {
+                        bobberRenderer.sprite = fishSprite;
+                    }
+                    if (whatFish == 7)
+                    {
+                        bobberRenderer.sprite = fourWingedNarWhalSprite;
+                    }
+                }*/
+                bobberRenderer.sprite = bobberSprite;
                 currentBobberSpeed = 0;
                 bobberRb.velocity = Vector2.zero;
                 if(input.ActionValue)
@@ -95,6 +174,7 @@ public class PlayerFishing : MonoBehaviour
                         FishAmount += 1;
                         currentFishTimeWindow = 0;
                         print("YOU GOT FISH!");
+                        WhatFish();
                     }
                     bobberState = 3;
                 }
@@ -112,14 +192,14 @@ public class PlayerFishing : MonoBehaviour
                 }
                 if(!isInRange)
                 {
-                    var step1 = bobberRecallSpeed * Time.deltaTime;
+                    var step1 = bobberRecallSpeed * Time.fixedDeltaTime;
                     bobber.transform.position = Vector3.MoveTowards(bobber.transform.position, transform.position, step1);
                 }
                 currentFishTimeWindow -= Time.deltaTime;
                 //The bobber stays to find fish
                 break;
             case 3:
-                var step = bobberRecallSpeed * Time.deltaTime;
+                var step = bobberRecallSpeed * Time.fixedDeltaTime;
                 bobber.transform.position = Vector3.MoveTowards(bobber.transform.position, transform.position, step);
                 //The bobber is recalled
                 break;
@@ -140,5 +220,37 @@ public class PlayerFishing : MonoBehaviour
         {
             bobberState = 0;
         }
+    }
+    private void WhatFish()
+    {
+        if(whatFish == 1)
+        {
+            fishStats.Fesk += 1;
+        }
+        if (whatFish == 2)
+        {
+            fishStats.BlueFesk += 1;
+        }
+        if (whatFish == 3)
+        {
+            fishStats.LegFesk += 1;
+        }
+        if (whatFish == 4)
+        {
+            fishStats.Dad += 1;
+        }
+        if (whatFish == 5)
+        {
+            fishStats.MelkFesk += 1;
+        }
+        if (whatFish == 6)
+        {
+            fishStats.fish += 1;
+        }
+        if (whatFish == 7)
+        {
+            fishStats.FourWingedNarwhal += 1;
+        }
+
     }
 }
