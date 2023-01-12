@@ -18,6 +18,15 @@ public class PlayerFishing : MonoBehaviour
     private bool isBobberPositionReset;
 
     private int bobberState;
+
+    private float fishTimeWindow = 1;
+    private float currentFishTimeWindow;
+    private float currentTimeBeforeFish;
+
+    private bool hasFishBit;
+    [SerializeField] private Vector2 fishTimeRandom;
+
+    [SerializeField] private int FishAmount;
     void Start()
     {
         input = GetComponent<UlrikTestInput>();
@@ -44,7 +53,7 @@ public class PlayerFishing : MonoBehaviour
                 bobber.SetActive(false);
                 if(input.ActionValue)
                 {
-                    print("Casting Bobber");
+                    //print("Casting Bobber");
                     bobberState = 1;
                 }
                 break;
@@ -63,6 +72,10 @@ public class PlayerFishing : MonoBehaviour
                 if(currentBobberSpeed <= 0)
                 {
                     bobberState = 2;
+                    currentTimeBeforeFish = Random.Range(1,6);
+                    print(currentTimeBeforeFish);
+                    currentFishTimeWindow = 0;
+                    hasFishBit = false;
                 }
                 break;
             case 2:
@@ -70,8 +83,27 @@ public class PlayerFishing : MonoBehaviour
                 bobberRb.velocity = Vector2.zero;
                 if(input.ActionValue)
                 {
+                    if (currentFishTimeWindow > 0)
+                    {
+                        FishAmount += 1;
+                        currentFishTimeWindow = 0;
+                        print("YOU GOT FISH!");
+                    }
                     bobberState = 3;
                 }
+                if(currentFishTimeWindow <= 0 && !hasFishBit)
+                {
+                    currentTimeBeforeFish -= Time.deltaTime;
+                }
+                
+                if(currentTimeBeforeFish <= 0)
+                {
+                currentFishTimeWindow = fishTimeWindow;
+                    currentTimeBeforeFish = 1;
+                    print("FISH!");
+                    hasFishBit = true;
+                }
+                currentFishTimeWindow -= Time.deltaTime;
                 //The bobber stays to find fish
                 break;
             case 3:
