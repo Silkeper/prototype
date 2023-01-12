@@ -30,6 +30,8 @@ public class PlayerFishing : MonoBehaviour
     private float currentFishTimeWindow;
     private float currentTimeBeforeFish;
 
+    private bool bobberMovesRight;
+
     private bool hasFishBit;
     [SerializeField] private Vector2 fishTimeRandom;
 
@@ -94,6 +96,14 @@ public class PlayerFishing : MonoBehaviour
                 {
                     //print("Casting Bobber");
                     bobberState = 1;
+                    if(input.MoveVector.x >= 0)
+                    {
+                        bobberMovesRight = true;
+                    }
+                    if (input.MoveVector.x < 0)
+                    {
+                        bobberMovesRight = false;
+                    }
                 }
                 break;
             case 1:
@@ -106,7 +116,15 @@ public class PlayerFishing : MonoBehaviour
                     currentBobberSpeed = MaxBobberSpeed;
                     isBobberPositionReset = true;
                 }
-                bobberRb.velocity = Vector2.up * currentBobberSpeed;
+                if(bobberMovesRight)
+                {
+                    bobberRb.velocity = Vector2.right * currentBobberSpeed;
+                }
+                else
+                {
+                    bobberRb.velocity = Vector2.left * currentBobberSpeed;
+                }
+                
                 currentBobberSpeed -= bobberSpeedDecay * Time.deltaTime;
                 if(currentBobberSpeed <= 0)
                 {
@@ -255,7 +273,7 @@ public class PlayerFishing : MonoBehaviour
         Debug.DrawRay(origin1, direction * 0.1f, Color.red);
 
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if(other.CompareTag("bobber") && bobberState == 3)
         {
