@@ -71,6 +71,17 @@ public partial class @UlrikTestActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5f1a245b-3c93-4180-a0ac-b6ed2af5aadf"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""9f0c1d30-f8d5-4967-a6c0-eb6b16432448"",
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
