@@ -24,6 +24,7 @@ public class FishMenu : MonoBehaviour
 
         if (inputs.menufishValue)
         {
+
             if (isMenuOpen == false)
             {
                 canvasObject.SetActive(true);
@@ -37,6 +38,7 @@ public class FishMenu : MonoBehaviour
 
                 isMenuOpen = false;
             }
+
         }
 
         
