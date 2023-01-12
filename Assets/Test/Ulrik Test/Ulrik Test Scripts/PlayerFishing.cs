@@ -27,6 +27,9 @@ public class PlayerFishing : MonoBehaviour
     [SerializeField] private Vector2 fishTimeRandom;
 
     [SerializeField] private int FishAmount;
+
+    private bool isInRange;
+    [SerializeField] private LayerMask isInRangeLayer;
     void Start()
     {
         input = GetComponent<UlrikTestInput>();
@@ -37,6 +40,8 @@ public class PlayerFishing : MonoBehaviour
     void Update()
     {
         BobberStates();
+        PullBobberWhenOutOfRange();
+        
     }
     private void FixedUpdate()
     {
@@ -79,6 +84,8 @@ public class PlayerFishing : MonoBehaviour
                 }
                 break;
             case 2:
+                //bobber exists
+                
                 currentBobberSpeed = 0;
                 bobberRb.velocity = Vector2.zero;
                 if(input.ActionValue)
@@ -103,6 +110,11 @@ public class PlayerFishing : MonoBehaviour
                     print("FISH!");
                     hasFishBit = true;
                 }
+                if(!isInRange)
+                {
+                    var step1 = bobberRecallSpeed * Time.deltaTime;
+                    bobber.transform.position = Vector3.MoveTowards(bobber.transform.position, transform.position, step1);
+                }
                 currentFishTimeWindow -= Time.deltaTime;
                 //The bobber stays to find fish
                 break;
@@ -114,11 +126,14 @@ public class PlayerFishing : MonoBehaviour
         }
     }
 
-    private void CastBobber()
+    private void PullBobberWhenOutOfRange()
     {
+        Vector2 origin1 = bobber.transform.position;
+        Vector2 direction = Vector2.up;
+        isInRange = Physics2D.Raycast(origin1, direction, 0.1f, isInRangeLayer);
+        Debug.DrawRay(origin1, direction * 0.1f, Color.red);
 
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("bobber") && bobberState == 3)
