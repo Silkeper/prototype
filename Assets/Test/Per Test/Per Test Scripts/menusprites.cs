@@ -26,6 +26,8 @@ public class menusprites : MonoBehaviour
     [SerializeField] private GameObject dadDescription;
     [SerializeField] private GameObject narwhalDescription;
     [SerializeField] private GameObject fishDescription;
+    [SerializeField] private GameObject scaredfishDescription;
+    [SerializeField] private GameObject flyingfishDescription;
 
 
     public GameObject undiscoveredToothfish;
@@ -35,14 +37,17 @@ public class menusprites : MonoBehaviour
     public GameObject undiscoveredDad;
     public GameObject undiscoveredNarwhal;
     public GameObject undiscoveredfish;
+    public GameObject scaredundiscoveredfish;
+    public GameObject undiscoveredflyingfish;
 
+    /*
     [SerializeField] private Sprite toothFishSprite;
     [SerializeField] private Sprite LegFishSprite;
     [SerializeField] private Sprite BlueFishSprite;
     [SerializeField] private Sprite MilkFishSprite;
     [SerializeField] private Sprite DadFishSprite;
     [SerializeField] private Sprite NarwhalSprite;
-    [SerializeField] private Sprite FishSprite;
+    [SerializeField] private Sprite FishSprite;*/
 
     void Start()
     {
@@ -109,6 +114,20 @@ public class menusprites : MonoBehaviour
             undiscoveredNarwhal.SetActive(false);
 
             narwhalDescription.SetActive(true);
+        }
+
+        if (fishstats.scared > 0)
+        {
+            scaredundiscoveredfish.SetActive(false);
+
+            scaredfishDescription.SetActive(true);
+        }
+
+        if (fishstats.Seagull > 0)
+        {
+            undiscoveredflyingfish.SetActive(false);
+
+            flyingfishDescription.SetActive(true);
         }
     }
 }
