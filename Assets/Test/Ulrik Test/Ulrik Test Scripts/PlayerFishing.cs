@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerFishing : MonoBehaviour
 {
     private Inputs input;
     private FishStatsScripts fishStats;
     [SerializeField] private GameObject bobber;
+    [SerializeField] private SpriteRenderer utropsTegn;
     private Rigidbody2D bobberRb;
     private SpriteRenderer bobberRenderer;
+
+    [SerializeField] private Transform linePoint;
+    [SerializeField] private Transform bobberLinePoint;
+    private LineRenderer lineRenderer;
 
     private float currentBobberSpeed;
     private float MaxBobberSpeed = 10;
@@ -48,6 +53,8 @@ public class PlayerFishing : MonoBehaviour
         fishStats = GetComponent<FishStatsScripts>();
         bobberRb = bobber.GetComponent<Rigidbody2D>();
         bobberRenderer = bobber.GetComponent<SpriteRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
+        utropsTegn.enabled = false;
     }
 
     // Update is called once per frame
@@ -55,6 +62,16 @@ public class PlayerFishing : MonoBehaviour
     {
         BobberStates();
         PullBobberWhenOutOfRange();
+        if(bobberState != 0)
+        {
+            lineRenderer.enabled = true;
+            lineRenderer.SetPosition(0, linePoint.position);
+            lineRenderer.SetPosition(1, bobberLinePoint.position);
+        }
+        else
+        {
+            lineRenderer.enabled = false;
+        }
         
     }
     private void FixedUpdate()
@@ -66,7 +83,9 @@ public class PlayerFishing : MonoBehaviour
     {
         switch(bobberState)
         {
+
             case 0:
+                utropsTegn.enabled = false;
                 //The bobber is inactive
                 bobberRenderer.sprite = bobberSprite;
                 isBobberPositionReset = false;
@@ -91,19 +110,16 @@ public class PlayerFishing : MonoBehaviour
                 currentBobberSpeed -= bobberSpeedDecay * Time.deltaTime;
                 if(currentBobberSpeed <= 0)
                 {
-                    bobberState = 2;
-                    currentTimeBeforeFish = Random.Range(1f,6f);
-                    whatFish = Random.Range(1,8);
-                    print(currentTimeBeforeFish);
-                    currentFishTimeWindow = 0;
-                    hasFishBit = false;
+                    bobberState = 4;
                 }
                 break;
             case 2:
                 //bobber exists
-                if(currentFishTimeWindow > 0)
+                
+                if (currentFishTimeWindow < 0)
                 {
-                    // bobberRenderer.sprite = bobberSprite;
+                    bobberRenderer.sprite = bobberSprite;
+                    /*
                     if (whatFish == 1)
                     {
                         bobberRenderer.sprite = feskSprite;
@@ -132,7 +148,8 @@ public class PlayerFishing : MonoBehaviour
                     {
                         bobberRenderer.sprite = fourWingedNarWhalSprite;
                     }
-                }/*
+                    */
+                }
                 else
                 {
                     if (whatFish == 1)
@@ -163,14 +180,15 @@ public class PlayerFishing : MonoBehaviour
                     {
                         bobberRenderer.sprite = fourWingedNarWhalSprite;
                     }
-                }*/
-                bobberRenderer.sprite = bobberSprite;
+                }
+               // bobberRenderer.sprite = bobberSprite;
                 currentBobberSpeed = 0;
                 bobberRb.velocity = Vector2.zero;
                 if(input.ActionValue)
                 {
                     if (currentFishTimeWindow > 0)
                     {
+                        hasFishBit = false;
                         FishAmount += 1;
                         currentFishTimeWindow = 0;
                         print("YOU GOT FISH!");
@@ -181,6 +199,15 @@ public class PlayerFishing : MonoBehaviour
                 if(currentFishTimeWindow <= 0 && !hasFishBit)
                 {
                     currentTimeBeforeFish -= Time.deltaTime;
+                }
+
+                if(currentFishTimeWindow >= 0)
+                {
+                    utropsTegn.enabled = true;
+                }
+                else
+                {
+                    utropsTegn.enabled = false;
                 }
                 
                 if(currentTimeBeforeFish <= 0)
@@ -196,12 +223,26 @@ public class PlayerFishing : MonoBehaviour
                     bobber.transform.position = Vector3.MoveTowards(bobber.transform.position, transform.position, step1);
                 }
                 currentFishTimeWindow -= Time.deltaTime;
+                if(currentFishTimeWindow <= 0 && hasFishBit)
+                {
+                    bobberState = 4;
+                }
                 //The bobber stays to find fish
                 break;
             case 3:
+                utropsTegn.enabled = false;
                 var step = bobberRecallSpeed * Time.fixedDeltaTime;
                 bobber.transform.position = Vector3.MoveTowards(bobber.transform.position, transform.position, step);
                 //The bobber is recalled
+                break;
+            case 4:
+                
+                currentTimeBeforeFish = Random.Range(1f, 6f);
+                whatFish = Random.Range(1, 8);
+                print(currentTimeBeforeFish);
+                currentFishTimeWindow = -20;
+                hasFishBit = false;
+                bobberState = 2;
                 break;
         }
     }
