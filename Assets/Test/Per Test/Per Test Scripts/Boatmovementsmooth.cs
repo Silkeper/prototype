@@ -23,11 +23,13 @@ public class Boatmovementsmooth : MonoBehaviour
     private bool isGround;
 
     [SerializeField] private LayerMask GroundLayer;
+
+    private Animator animator;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         input = GetComponent<Inputs>();
-        
+        animator = GetComponent<Animator>();
 
     }
 
@@ -75,6 +77,7 @@ public class Boatmovementsmooth : MonoBehaviour
     {
         if(!isGround)
         {
+            animator.Play("WaterIdle");
             if (input.MoveVector != Vector2.zero && currentmoveSpeed <= maxMoveSpeed) //do more stuff-
             {
                 currentmoveSpeed += accelaration * Time.deltaTime;
@@ -90,13 +93,24 @@ public class Boatmovementsmooth : MonoBehaviour
         }
         if (isGround)
         {
+
             if (input.MoveVector != Vector2.zero && currentmoveSpeed <= maxgroundMoveSpeed) //do more stuff-
             {
+
                 currentmoveSpeed += groundAcceleration * Time.deltaTime;
             }
             if (currentmoveSpeed > 0 && input.MoveVector == Vector2.zero)
             {
                 currentmoveSpeed -= groundAcceleration * Time.deltaTime;
+            }
+
+            if(currentmoveSpeed > 0)
+            {
+                animator.Play("GroundMove");
+            }
+            else
+            {
+                animator.Play("GroundIdle");
             }
         }
 
