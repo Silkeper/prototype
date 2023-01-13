@@ -975,6 +975,7 @@ GameObject:
   - component: {fileID: 768885349}
   - component: {fileID: 768885350}
   - component: {fileID: 768885351}
+  - component: {fileID: 768885352}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1072,13 +1073,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe274ff7a4eec94994fb9da236afd57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toothDescription: {fileID: 0}
-  legDescription: {fileID: 0}
-  blueDescription: {fileID: 0}
-  milkDescription: {fileID: 0}
-  dadDescription: {fileID: 0}
-  narwhalDescription: {fileID: 0}
-  fishDescription: {fileID: 0}
+  toothDescription: {fileID: 2131914803}
+  legDescription: {fileID: 1315816425}
+  blueDescription: {fileID: 994967529}
+  milkDescription: {fileID: 1039185978}
+  dadDescription: {fileID: 1078962218}
+  narwhalDescription: {fileID: 869894680}
+  fishDescription: {fileID: 1440201213}
+  scaredfishDescription: {fileID: 1152492022}
+  flyingfishDescription: {fileID: 2111798566}
   undiscoveredToothfish: {fileID: 348347911}
   undiscoveredLegFish: {fileID: 1846179359}
   undiscoveredBlueFish: {fileID: 1287406503}
@@ -1086,13 +1089,29 @@ MonoBehaviour:
   undiscoveredDad: {fileID: 1975643727}
   undiscoveredNarwhal: {fileID: 638619783}
   undiscoveredfish: {fileID: 988172885}
-  toothFishSprite: {fileID: 0}
-  LegFishSprite: {fileID: 0}
-  BlueFishSprite: {fileID: 0}
-  MilkFishSprite: {fileID: 0}
-  DadFishSprite: {fileID: 0}
-  NarwhalSprite: {fileID: 0}
-  FishSprite: {fileID: 0}
+  scaredundiscoveredfish: {fileID: 1871191456}
+  undiscoveredflyingfish: {fileID: 2049566727}
+--- !u!114 &768885352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768885345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af13f8f8a1064c43ad29f50978fad22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fesk: 0
+  BlueFesk: 0
+  LegFesk: 0
+  Dad: 0
+  MelkFesk: 0
+  FourWingedNarwhal: 0
+  fish: 0
+  scared: 0
+  Seagull: 0
 --- !u!1 &824493440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,7 +1748,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Extremely endangered. It's probably extinct because of you. good job.
+  m_text: "Extremely endangered. It's probably extinc now because of you. \ngood
+    job."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4165,7 +4185,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Uses it's headlight to look for vegan food. The light howeverm draws predators.
+  m_text: Uses it's headlight to look for vegan food. The light however draws predators.
     Making sure it lives in constant fear.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
