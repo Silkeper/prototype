@@ -750,5 +750,9 @@ PrefabInstance:
       propertyPath: SeagullLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 8007776337624261971, guid: 3b222562bbd85af4d86696cda249a777, type: 3}
+      propertyPath: GroundLayer.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b222562bbd85af4d86696cda249a777, type: 3}

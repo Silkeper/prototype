@@ -12,14 +12,17 @@ public class Boatmovementsmooth : MonoBehaviour
     [SerializeField] private float currentmoveSpeed = 2;
     private float accelaration = 2;
     private float maxMoveSpeed = 5;
-
+    private float maxgroundMoveSpeed = 10;
+    private float groundAcceleration = 100;
 
     private float moveSmoothTime = 1;
 
     private Vector2 direction;
     private Vector2 currentDirection = Vector2.zero;
     private Vector2 currentDirectionVelocity = Vector2.zero;
+    private bool isGround;
 
+    [SerializeField] private LayerMask GroundLayer;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -35,15 +38,19 @@ public class Boatmovementsmooth : MonoBehaviour
         RememberDirection();
         Acceleration();
         Flip();
+        GroundCheck();
     }
 
     private void UpdateMovement()
     {
-
-        Vector3 velocity = ((transform.up * direction.y) +
+        
+            Vector3 velocity = ((transform.up * direction.y) +
                         (transform.right * direction.x)) * currentmoveSpeed;
 
-        characterController.Move(velocity * Time.deltaTime);
+            characterController.Move(velocity * Time.deltaTime);
+        
+        
+        
     }
 
     private void RememberDirection()
@@ -66,17 +73,38 @@ public class Boatmovementsmooth : MonoBehaviour
 
     private void Acceleration()
     {
-        if (input.MoveVector != Vector2.zero && currentmoveSpeed <= maxMoveSpeed) //do more stuff-
+        if(!isGround)
         {
-            currentmoveSpeed += accelaration * Time.deltaTime;
+            if (input.MoveVector != Vector2.zero && currentmoveSpeed <= maxMoveSpeed) //do more stuff-
+            {
+                currentmoveSpeed += accelaration * Time.deltaTime;
+            }
+            if(currentmoveSpeed > maxMoveSpeed)
+            {
+                currentmoveSpeed = maxMoveSpeed;
+            }
+            if (currentmoveSpeed > 0 && input.MoveVector == Vector2.zero)
+            {
+                currentmoveSpeed -= accelaration * Time.deltaTime;
+            }
         }
-        
-        else if (currentmoveSpeed > 0)
+        if (isGround)
         {
-            currentmoveSpeed -= accelaration * Time.deltaTime;
-        } 
+            if (input.MoveVector != Vector2.zero && currentmoveSpeed <= maxgroundMoveSpeed) //do more stuff-
+            {
+                currentmoveSpeed += groundAcceleration * Time.deltaTime;
+            }
+            if (currentmoveSpeed > 0 && input.MoveVector == Vector2.zero)
+            {
+                currentmoveSpeed -= groundAcceleration * Time.deltaTime;
+            }
+        }
+
+
+
         
-        else
+        
+        if (currentmoveSpeed <= 0)
         {
             currentmoveSpeed = 0;
         }
@@ -101,8 +129,16 @@ public class Boatmovementsmooth : MonoBehaviour
         
         if (input.MoveVector.y < 0)
         {
-            gameObject.transform.localScale = new Vector3(1, -1, 1);
+            //gameObject.transform.localScale = new Vector3(1, -1, 1);
         }
+    }
+
+    private void GroundCheck()
+    {
+        Vector2 origin1 = transform.position;
+        Vector2 direction = Vector2.up;
+        Debug.DrawRay(origin1, direction * 0.1f, Color.red);
+        isGround = Physics2D.Raycast(origin1, direction, 0.1f, GroundLayer);
     }
 
     /*private void UpdateMovementSmooth()
