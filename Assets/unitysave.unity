@@ -1110,6 +1110,8 @@ MonoBehaviour:
   MelkFesk: 0
   FourWingedNarwhal: 0
   fish: 0
+  scared: 0
+  Seagull: 0
 --- !u!1 &824493440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,7 +1748,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Extremely endangered. It's probably extinct because of you. good job.
+  m_text: "Extremely endangered. It's probably extinc now because of you. \ngood
+    job."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4182,7 +4185,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Uses it's headlight to look for vegan food. The light howeverm draws predators.
+  m_text: Uses it's headlight to look for vegan food. The light however draws predators.
     Making sure it lives in constant fear.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

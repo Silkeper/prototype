@@ -61,6 +61,8 @@ public class menusprites : MonoBehaviour
         dadDescription.SetActive(false);
         milkDescription.SetActive(false);
         narwhalDescription.SetActive(false);
+        scaredfishDescription.SetActive(false);
+        flyingfishDescription.SetActive(false);
     }
 
 
