@@ -49,15 +49,21 @@ public class PlayerFishing : MonoBehaviour
     [SerializeField] private Sprite fishSprite;
     [SerializeField] private Sprite fourWingedNarWhalSprite;
     [SerializeField] private Sprite scaredFeskSprite;
-    private int whatFish;
+    [SerializeField] private Sprite SeagullSprite;
+    private int whatFishLight;
+    private int whatFishDark;
+    private int whatFishSeagull;
+    private int whatFishGround;
 
     private bool isDarkBiome;
     private bool isLightBiome;
     private bool isSeagullBiome;
+    private bool isGroundBiome;
 
-    private LayerMask DarkLayer;
-    private LayerMask LightLayer;
-    private LayerMask SeagullLayer;
+    [SerializeField] private LayerMask DarkLayer;
+    [SerializeField] private LayerMask LightLayer;
+    [SerializeField] private LayerMask SeagullLayer;
+    [SerializeField]private LayerMask GroundLayer;
     void Start()
     {
         input = GetComponent<Inputs>();
@@ -71,6 +77,7 @@ public class PlayerFishing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        BiomeFinder();
         BobberStates();
         PullBobberWhenOutOfRange();
         if(bobberState != 0)
@@ -145,6 +152,39 @@ public class PlayerFishing : MonoBehaviour
                 
                 if (currentFishTimeWindow < 0)
                 {
+                    if (isLightBiome && !isGroundBiome || isSeagullBiome)
+                    {
+                        whatFishLight = Random.Range(1, 4);
+                        whatFishDark = 0;
+                        whatFishSeagull = 0;
+                        whatFishGround = 0;
+                    }
+                    if (isDarkBiome && !isGroundBiome)
+                    {
+                        whatFishDark = Random.Range(1, 5);
+                        whatFishLight = 0;
+                        whatFishSeagull = 0;
+                        whatFishGround = 0;
+                    }
+                    if (isSeagullBiome)
+                    {
+                        whatFishSeagull = Random.Range(1, 3);
+                        whatFishLight = 0;
+                        whatFishDark = 0;
+                        whatFishGround = 0;
+                    }
+                    if (isGroundBiome)
+                    {
+                        whatFishGround = Random.Range(1, 3);
+                        whatFishLight = 0;
+                        whatFishDark = 0;
+                        whatFishSeagull = 0;
+                    }
+                    
+                    
+                    
+                    
+
                     bobberRenderer.sprite = bobberSprite;
                     /*
                     if (whatFish == 1)
@@ -179,37 +219,56 @@ public class PlayerFishing : MonoBehaviour
                 }
                 else
                 {
-                    if (whatFish == 1)
+
+                    if (whatFishLight == 1)
                     {
                         bobberRenderer.sprite = feskSprite;
                     }
-                    if (whatFish == 2)
+                    if (whatFishLight == 2)
                     {
                         bobberRenderer.sprite = blueFeskSprite;
                     }
-                    if (whatFish == 3)
-                    {
-                        bobberRenderer.sprite = legFeskSprite;
-                    }
-                    if (whatFish == 4)
-                    {
-                        bobberRenderer.sprite = DadSprite;
-                    }
-                    if (whatFish == 5)
-                    {
-                        bobberRenderer.sprite = MelkFeskSprite;
-                    }
-                    if (whatFish == 6)
+                    if (whatFishLight == 3)
                     {
                         bobberRenderer.sprite = fishSprite;
                     }
-                    if (whatFish == 7)
+
+
+                    if (whatFishLight == 4)
                     {
                         bobberRenderer.sprite = fourWingedNarWhalSprite;
                     }
-                    if (whatFish == 8)
+                    
+
+                    if (whatFishDark == 1)
                     {
                         bobberRenderer.sprite = scaredFeskSprite;
+                    }
+                    if (whatFishDark == 2)
+                    {
+                        bobberRenderer.sprite = DadSprite;
+                    }
+                    if(whatFishDark == 3)
+                    {
+                        bobberRenderer.sprite = MelkFeskSprite;
+                    }
+
+                    if(whatFishSeagull == 1)
+                    {
+                        bobberRenderer.sprite = SeagullSprite;
+                    }
+                    if(whatFishSeagull == 2)
+                    {
+                        bobberRenderer.sprite = feskSprite;
+                    }
+
+                    if(whatFishGround == 1)
+                    {
+                        bobberRenderer.sprite = legFeskSprite;
+                    }
+                    if (whatFishGround == 2)
+                    {
+                        bobberRenderer.sprite = legFeskSprite;
                     }
                 }
                // bobberRenderer.sprite = bobberSprite;
@@ -269,7 +328,7 @@ public class PlayerFishing : MonoBehaviour
             case 4:
                 
                 currentTimeBeforeFish = Random.Range(1f, 6f);
-                whatFish = Random.Range(1, 9);
+                //whatFishLight = Random.Range(1, 9);
                 print(currentTimeBeforeFish);
                 currentFishTimeWindow = -20;
                 hasFishBit = false;
@@ -295,6 +354,7 @@ public class PlayerFishing : MonoBehaviour
         isDarkBiome = Physics2D.Raycast(origin1, direction, 0.1f, DarkLayer);
         isLightBiome = Physics2D.Raycast(origin1, direction, 0.1f, LightLayer);
         isSeagullBiome = Physics2D.Raycast(origin1, direction, 0.1f, SeagullLayer);
+        isGroundBiome = Physics2D.Raycast(origin1, direction, 0.1f, GroundLayer);
     }
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -305,37 +365,53 @@ public class PlayerFishing : MonoBehaviour
     }
     private void WhatFish()
     {
-        if(whatFish == 1)
+        if (whatFishLight == 1)
         {
             fishStats.Fesk += 1;
         }
-        if (whatFish == 2)
+        if (whatFishLight == 2)
         {
             fishStats.BlueFesk += 1;
         }
-        if (whatFish == 3)
-        {
-            fishStats.LegFesk += 1;
-        }
-        if (whatFish == 4)
-        {
-            fishStats.Dad += 1;
-        }
-        if (whatFish == 5)
-        {
-            fishStats.MelkFesk += 1;
-        }
-        if (whatFish == 6)
+        if (whatFishLight == 3)
         {
             fishStats.fish += 1;
         }
-        if (whatFish == 7)
+        if (whatFishLight == 4)
         {
             fishStats.FourWingedNarwhal += 1;
         }
-        if(whatFish == 8)
+
+
+        if (whatFishDark == 1)
         {
             fishStats.scared += 1;
+        }
+        if (whatFishDark == 2)
+        {
+            fishStats.Dad += 1;
+        }
+        if (whatFishDark == 3)
+        {
+            fishStats.MelkFesk += 1;
+        }
+
+        if (whatFishSeagull == 1)
+        {
+            fishStats.Seagull += 1;
+        }
+        if (whatFishSeagull == 2)
+        {
+            fishStats.Fesk += 1;
+        }
+
+        if (whatFishGround == 1)
+        {
+            fishStats.LegFesk += 1;
+        }
+        if (whatFishGround == 2)
+        {
+            fishStats.LegFesk += 1;
         }
     }
 }
