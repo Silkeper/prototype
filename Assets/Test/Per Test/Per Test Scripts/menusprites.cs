@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class menusprites : MonoBehaviour
 {
-    FishStatsScripts fishstats;
+    [SerializeField] FishStatsScripts fishstats;
 
     //banned for being naugthy
     /*
@@ -52,7 +52,7 @@ public class menusprites : MonoBehaviour
     void Start()
     {
 
-        fishstats = gameObject.GetComponent<FishStatsScripts>();
+        //fishstats = gameObject.GetComponent<FishStatsScripts>();
 
         toothDescription.SetActive(false);
         fishDescription.SetActive(false);

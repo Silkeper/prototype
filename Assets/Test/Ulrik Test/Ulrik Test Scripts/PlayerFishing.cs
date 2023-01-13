@@ -154,14 +154,14 @@ public class PlayerFishing : MonoBehaviour
                 {
                     if (isLightBiome && !isGroundBiome || isSeagullBiome)
                     {
-                        whatFishLight = Random.Range(1, 4);
+                        whatFishLight = Random.Range(1, 5);
                         whatFishDark = 0;
                         whatFishSeagull = 0;
                         whatFishGround = 0;
                     }
                     if (isDarkBiome && !isGroundBiome)
                     {
-                        whatFishDark = Random.Range(1, 5);
+                        whatFishDark = Random.Range(1, 4);
                         whatFishLight = 0;
                         whatFishSeagull = 0;
                         whatFishGround = 0;
@@ -173,7 +173,7 @@ public class PlayerFishing : MonoBehaviour
                         whatFishDark = 0;
                         whatFishGround = 0;
                     }
-                    if (isGroundBiome)
+                    if (isGroundBiome && !isSeagullBiome)
                     {
                         whatFishGround = Random.Range(1, 3);
                         whatFishLight = 0;
